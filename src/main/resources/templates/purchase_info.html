@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>采购合同信息</title>
+
+  <!--dynamic table-->
+  <link href="js/advanced-datatable/css/demo_page.css" rel="stylesheet" />
+  <link href="js/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+  <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css" />
+
+
+    <div th:include="common::common-header"></div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <div th:replace="common::common-leftmenu"></div>
+
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <div th:replace="common::common-headermenu"></div>
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <!--<h3>
+                销售合同信息
+            </h3>-->
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">采购模块</a>
+                </li>
+                <li class="active"> 采购合同信息 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--<div class="panel">
+            <header class="panel-heading">
+                查询
+            </header>
+            <div class="panel-body">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+&lt;!&ndash;                        <label class="sr-only" for="exampleInputEmail2">Email address</label>&ndash;&gt;
+                        <input  class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+&lt;!&ndash;                        <label class="sr-only" for="exampleInputPassword2">Password</label>&ndash;&gt;
+                        <input  class="form-control" id="exampleInputPassword2" placeholder="Password">
+                    </div>
+                    <a href="#" class="btn btn-primary"  id="button-query">查询</a>
+
+                </form>
+            </div>
+        </div>-->
+        <!--body wrapper start-->
+        <div class="wrapper">
+        <div class="row">
+        <div class="col-sm-12">
+        <section class="panel">
+        <div class="panel-body">
+        <div class="adv-table" style="overflow: auto">
+        <div class="clearfix">
+            <div class="btn-group">
+                <a href="#salesContractModal" data-toggle="modal" class="btn btn-xs btn-success" th:data-method="insert" th:if="${session.loginUser.department} == 'shangwu'">
+                    新增 <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="salesContractModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">采购合同</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" id="contract-form">
+                            <input type="hidden" class="form-control" id="id" name="id">
+                            <div class="form-group">
+                                <label for="salesContractNo" class="col-lg-2 col-sm-2 control-label">主合同号</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control m-bot15" id="salesContractNo" name="salesContractNo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectName" class="col-lg-2 col-sm-2 control-label">项目名称</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="projectName" name="projectName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="company" class="col-lg-2 col-sm-2 control-label">所属区域</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="company" name="company">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractNo" class="col-lg-2 col-sm-2 control-label">采购合同号</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="contractNo" name="contractNo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplierName" class="col-lg-2 col-sm-2 control-label">供应商名称</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="supplierName" name="supplierName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signSubject" class="col-lg-2 col-sm-2 control-label">签订合同主体</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="signSubject" name="signSubject">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="signDate" class="col-lg-2 col-sm-2 control-label">签订时间</label>
+                                <div class="col-lg-10">
+                                    <input type="date" class="form-control" id="signDate" name="signDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="purchaseCategory" class="col-lg-2 col-sm-2 control-label">采购类别</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="purchaseCategory" name="purchaseCategory">
+                                        <option value="服务">服务</option>
+                                        <option value="软件">软件</option>
+                                        <option value="硬件">硬件</option>
+                                        <option value="质保">质保</option>
+                                        <option value="设备、材料">设备、材料</option>
+                                    </select></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="purchaseMaterial" class="col-lg-2 col-sm-2 control-label">采购物料名称</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="purchaseMaterial" name="purchaseMaterial">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="budgetAmount" class="col-lg-2 col-sm-2 control-label">单项合同预算金额</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="budgetAmount" name="budgetAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contractAmount" class="col-lg-2 col-sm-2 control-label">采购合同金额</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="contractAmount" name="contractAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="payMode" class="col-lg-2 col-sm-2 control-label">账期/付款方式</label>
+                                <div class="col-lg-10">
+                                    <textarea rows="6" class="form-control" id="payMode" name="payMode"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="receivingDate" class="col-lg-2 col-sm-2 control-label">到货/服务日期</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="receivingDate" name="receivingDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentDate" class="col-lg-2 col-sm-2 control-label">到货付款日期</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="paymentDate" name="paymentDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="isAll" class="col-lg-2 col-sm-2 control-label">除发票外单据是否齐全</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="isAll" name="isAll">
+                                        <option value="是">是</option>
+                                        <option value="否">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="invoiceType" class="col-lg-2 col-sm-2 control-label">发票类别</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="invoiceType" name="invoiceType">
+                                        <option value="普票">普票</option>
+                                        <option value="专票">专票</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="taxRate" class="col-lg-2 col-sm-2 control-label">税率</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="taxRate" name="taxRate">
+                                        <option value="0%">0%</option>
+                                        <option value="1%">1%</option>
+                                        <option value="3%">3%</option>
+                                        <option value="6%">6%</option>
+                                        <option value="13%">13%</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="initInvoiceAmount" class="col-lg-2 col-sm-2 control-label">以前年度已收票</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="initInvoiceAmount" name="initInvoiceAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="initPaymentAmount" class="col-lg-2 col-sm-2 control-label">以前年度已付款</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="initPaymentAmount" name="initPaymentAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="huaweiAmount" class="col-lg-2 col-sm-2 control-label">华为激励</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="huaweiAmount" name="huaweiAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group" id="rejectionContentDiv">
+                                <label for="rejectionContent" class="col-lg-2 col-sm-2 control-label">驳回原因</label>
+                                <div class="col-lg-10">
+                                    <textarea rows="6" class="form-control" id="rejectionContent" name="rejectionContent"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10" id="saveDiv">
+                                    <a href="#" class="btn btn-primary"  id="button-save">保存</a>
+                                    <a href="#" class="btn btn-primary"  id="button-submit">提交审核</a>
+                                </div>
+                                <div class="col-lg-offset-2 col-lg-10" id="checkDiv">
+                                    <a href="#" class="btn btn-primary" id="button-approved">通过</a>
+                                    <a href="#" class="btn btn-primary" id="button-reject">驳回</a>
+                                </div>
+                                <div class="col-lg-offset-2 col-lg-10" id="rollbackDiv">
+                                    <a href="#" class="btn btn-primary" id="button-rollback">取消审核</a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <table  class="display table table-bordered table-striped" id="dynamic-table" >
+            <thead>
+                <tr>
+                    <th>主合同号</th>
+                    <th>项目名称</th>
+                    <th class="hidden-phone">所属区域</th>
+                    <th>采购合同号</th>
+                    <th>供应商名称</th>
+                    <th>签订合同主体</th>
+                    <th>签订时间</th>
+                    <th>采购类别</th>
+                    <th>采购物料名称</th>
+                    <th>单项合同预算金额</th>
+                    <th>采购合同金额</th>
+                    <th>账期/付款方式</th>
+                    <th>到货/服务日期</th>
+                    <th>到货/付款日期</th>
+                    <th>除发票外单据是否齐全</th>
+                    <th>发票类别</th>
+                    <th>税率</th>
+                    <th>以前年度已收票</th>
+                    <th>以前年度已付款</th>
+                    <th>华为激励</th>
+                    <th>操作员</th>
+                    <th>审核状态</th>
+                    <th class="hidden-phone">审核人</th>
+                    <th class="hidden-phone">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="gradeX" th:each="data,stats:${dataList}">
+                    <td th:text="${data[sales_contract_no]} ?: ''">主合同号</td>
+                    <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[project_name]}" th:if="${#strings.trim(data[project_name])} and ${#strings.length(#strings.trim(data[project_name]))>=5}">[[|${#strings.substring(#strings.trim(data[project_name]),0,5)}...|]]</a>
+                        <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[project_name]}" th:if="${#strings.trim(data[project_name])} and ${#strings.length(#strings.trim(data[project_name]))<5}">[[${#strings.trim(data[project_name])}]]</a></td>
+                    <td class="hidden-phone" th:text="${data[company]} ?: ''">所属区域</td>
+                    <td th:text="${data[contract_no]} ?: ''">采购合同号</td>
+                    <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[supplier_name]}" th:if="${#strings.trim(data[supplier_name])} and ${#strings.length(#strings.trim(data[supplier_name]))>=5}">[[|${#strings.substring(#strings.trim(data[supplier_name]),0,5)}...|]]</a>
+                        <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[supplier_name]}" th:if="${#strings.trim(data[supplier_name])} and ${#strings.length(#strings.trim(data[supplier_name]))<5}">[[${#strings.trim(data[supplier_name])}]]</a></td>
+                    <td th:text="${data[sign_subject]} ?: ''">签订合同主体</td>
+                    <td th:text="${#dates.format(data[sign_date], 'yyyy-MM-dd')} ?: ''">签订时间</td>
+                    <td th:text="${data[purchase_category]} ?: ''">采购类别</td>
+                    <td th:text="${data[purchase_material]} ?: ''">采购物料名称</td>
+                    <td><p th:text="${#numbers.formatDecimal(data[budget_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="单项合同预算金额"></p></td>
+                    <td><p th:text="${#numbers.formatDecimal(data[contract_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="采购合同金额"></p></td>
+                    <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[pay_mode]}" th:if="${#strings.trim(data[pay_mode])} and ${#strings.length(#strings.trim(data[pay_mode]))>=5}">[[|${#strings.substring(#strings.trim(data[pay_mode]),0,5)}...|]]</a>
+                        <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[pay_mode]}" th:if="${#strings.trim(data[pay_mode])} and ${#strings.length(#strings.trim(data[pay_mode]))<5}">[[${#strings.trim(data[pay_mode])}]]</a></td>
+                    <td th:text="${data[receiving_date]} ?: ''">到货/服务日期</td>
+                    <td th:text="${data[payment_date]} ?: ''">到货/付款日期</td>
+                    <td th:text="${data[is_all]} ?: ''">除发票外单据是否齐全</td>
+                    <td th:text="${data[invoice_type]} ?: ''">发票类别</td>
+                    <td th:text="${data[tax_rate]} ?: ''">税率</td>
+                    <td><p th:text="${#numbers.formatDecimal(data[init_invoice_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="以前年度已收票"></p></td>
+                    <td><p th:text="${#numbers.formatDecimal(data[init_payment_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="以前年度已付款"></p></td>
+                    <td><p th:text="${#numbers.formatDecimal(data[huawei_amount], 1, 'COMMA', 2, 'POINT')} ?: 0.00" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="华为激励"></p></td>
+
+                    <td>[[${data.create_user_name}]]</td>
+                    <td class="hidden-phone" th:switch="${data.status}">
+                        <p th:case=0>待提交</p>
+                        <p th:case=1>待审核</p>
+                        <p th:case=2>审核通过</p>
+                        <p th:case=3>审核驳回</p>
+                        <p th:case="*"></p>
+                    </td>
+                    <td class="hidden-phone" th:text="${data[audit_user_name]} ?: ''"></td>
+
+                    <td class="hidden-phone" >
+                        <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.id}" th:data-method="update" th:if="${session.loginUser.id}==${data[create_user_id]} and (${data.status}==0 or ${data.status}==3)">编辑</button>
+                        <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.id}" th:data-method="check" th:if="${session.loginUser.role}==1 and ${data.status}==1 and ${session.loginUser.department} == 'shangwu'">审核</button>
+                        <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.id}" th:data-method="rollback" th:if="${session.loginUser.id}==(${data[audit_user_id]}?:'') and ${data.status}==2">取消审核</button>
+                        <a href="#syslogModal" class="btn btn-xs btn-info" data-toggle="modal" th:data-rowid="${data.id}" th:data-table="purchaseInfo">操作日志</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        </div>
+        </section>
+        </div>
+        </div>
+        </div>
+        <!--body wrapper end-->
+        </div>
+
+    <!-- main content end-->
+</section>
+
+<div th:replace="common::common-script"></div>
+
+<!--dynamic table-->
+<script type="text/javascript" language="javascript" src="js/advanced-datatable/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+<!--dynamic table initialization -->
+<script src="js/purchase_info.js" th:inline="javascript"></script>
+
+</body>
+</html>

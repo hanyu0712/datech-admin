@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>采购合同统计信息</title>
+
+  <!--dynamic table-->
+  <link href="js/advanced-datatable/css/demo_page.css" rel="stylesheet" />
+  <link href="js/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+  <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css" />
+
+
+    <div th:include="common::common-header"></div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <div th:replace="common::common-leftmenu"></div>
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <div th:replace="common::common-headermenu"></div>
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <!--<h3>
+                销售合同信息
+            </h3>-->
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">采购模块</a>
+                </li>
+                <li class="active"> 采购合同统计信息 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+        <div class="row">
+        <div class="col-sm-12">
+        <section class="panel">
+        <div class="panel-body">
+        <div class="adv-table" style="overflow: auto">
+            <div class="clearfix">
+                <div class="btn-group pull-right">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Tools <i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="javascript:void(0)" onclick="exportExcel()">导出 Excel</a></li>
+                    </ul>
+                </div>
+            </div>
+            <table  class="display table table-bordered table-striped" id="dynamic-table" >
+                <thead>
+                    <tr>
+                        <th>主合同号</th>
+                        <th>项目名称</th>
+                        <th>所属区域</th>
+                        <th>采购合同号</th>
+                        <th>供应商名称</th>
+                        <th>签订合同主体</th>
+                        <th>签订时间</th>
+                        <th>采购类别</th>
+                        <th>采购物料名称</th>
+                        <th>单项合同预算金额</th>
+                        <th>采购合同金额</th>
+                        <th>账期/付款方式</th>
+                        <th>到货/服务日期</th>
+                        <th>到货/付款日期</th>
+                        <th>除发票外单据是否齐全</th>
+                        <th>发票类别</th>
+                        <th>税率</th>
+                        <th>累计收票</th>
+                        <th>以前年度已收票</th>
+                        <th>本年收票</th>
+                        <th>欠票</th>
+                        <th>累计已付款</th>
+                        <th>以前年度已付款</th>
+                        <th>华为激励</th>
+                        <th>本年度已付款</th>
+                        <!--<th>1月付款</th>
+                        <th>2月付款</th>
+                        <th>3月付款</th>
+                        <th>1季度付款</th>
+                        <th>4月付款</th>
+                        <th>5月付款</th>
+                        <th>6月付款</th>
+                        <th>2季度付款</th>
+                        <th>7月付款</th>
+                        <th>8月付款</th>
+                        <th>9月付款</th>
+                        <th>3季度付款</th>
+                        <th>10月付款</th>
+                        <th>11月付款</th>
+                        <th>12月付款</th>
+                        <th>4季度付款</th>-->
+                        <th>合同欠款</th>
+                        <th>未付款金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="gradeX" th:each="data,stats:${dataList}">
+                        <td th:text="${data[sales_contract_no]} ?: ''">主合同号</td>
+                        <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[project_name]}" th:if="${#strings.trim(data[project_name])} and ${#strings.length(#strings.trim(data[project_name]))>=5}">[[|${#strings.substring(#strings.trim(data[project_name]),0,5)}...|]]</a>
+                            <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[project_name]}" th:if="${#strings.trim(data[project_name])} and ${#strings.length(#strings.trim(data[project_name]))<5}">[[${#strings.trim(data[project_name])}]]</a></td>
+                        <td th:text="${data[company]} ?: ''">所属区域</td>
+                        <td th:text="${data[contract_no]} ?: ''">采购合同号</td>
+                        <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[supplier_name]}" th:if="${#strings.trim(data[supplier_name])} and ${#strings.length(#strings.trim(data[supplier_name]))>=5}">[[|${#strings.substring(#strings.trim(data[supplier_name]),0,5)}...|]]</a>
+                            <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[supplier_name]}" th:if="${#strings.trim(data[supplier_name])} and ${#strings.length(#strings.trim(data[supplier_name]))<5}">[[${#strings.trim(data[supplier_name])}]]</a></td>
+                        <td th:text="${data[sign_subject]} ?: ''">签订合同主体</td>
+                        <td th:text="${#dates.format(data[sign_date], 'yyyy-MM-dd')} ?: ''">签订时间</td>
+                        <td th:text="${data[purchase_category]} ?: ''">采购类别</td>
+                        <td th:text="${data[purchase_material]} ?: ''">采购物料名称</td>
+                        <td><p th:text="${#numbers.formatDecimal(data[budget_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="单项合同预算金额"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[contract_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="采购合同金额"></p></td>
+                        <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[pay_mode]}" th:if="${#strings.trim(data[pay_mode])} and ${#strings.length(#strings.trim(data[pay_mode]))>=5}">[[|${#strings.substring(#strings.trim(data[pay_mode]),0,5)}...|]]</a>
+                            <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data[pay_mode]}" th:if="${#strings.trim(data[pay_mode])} and ${#strings.length(#strings.trim(data[pay_mode]))<5}">[[${#strings.trim(data[pay_mode])}]]</a></td>
+                        <td th:text="${data[receiving_date]} ?: ''">到货/服务日期</td>
+                        <td th:text="${data[payment_date]} ?: ''">到货/付款日期</td>
+                        <td th:text="${data[is_all]} ?: ''">除发票外单据是否齐全</td>
+                        <td th:text="${data[invoice_type]} ?: ''">发票类别</td>
+                        <td th:text="${data[tax_rate]} ?: ''">税率</td>
+                        <td><p th:text="${#numbers.formatDecimal(data[accumulateInvoice], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="累计收票"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[init_invoice_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="以前年度已收票"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[yearInvoice], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="本年收票"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[unInvoice], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="欠票"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[accumulatePayment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="累计已付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[init_payment_amount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="以前年度已付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[huawei_amount], 1, 'COMMA', 2, 'POINT')} ?: 0.00" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="华为激励"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[yearAmount], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="本年度已付款"></p></td>
+                        <!--<td><p th:text="${#numbers.formatDecimal(data[month1Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="1月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month2Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="2月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month3Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="3月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[season1], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="1季度付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month4Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="4月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month5Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="5月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month6Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="6月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[season2], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="2季度付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month7Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="7月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month8Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="8月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month9Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="9月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[season3], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="3季度付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month10Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="10月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month11Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="11月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[month12Payment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="12月付款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[season4], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="4季度付款"></p></td>-->
+                        <td><p th:text="${#numbers.formatDecimal(data[arrears], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="合同欠款"></p></td>
+                        <td><p th:text="${#numbers.formatDecimal(data[unPayment], 1, 'COMMA', 2, 'POINT')} ?: ''" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="未付款金额"></p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        </section>
+        </div>
+        </div>
+        </div>
+        <!--body wrapper end-->
+        </div>
+
+    <!-- main content end-->
+</section>
+
+<div th:replace="common::common-script"></div>
+
+<!--dynamic table-->
+<script type="text/javascript" language="javascript" src="js/advanced-datatable/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+<!--dynamic table initialization -->
+<script th:inline="javascript">
+    function exportExcel() {
+        window.location.href = [[${#httpServletRequest.getScheme()}]] + '://' + [[${#httpServletRequest.getServerName()}]] + ':' + [[${#httpServletRequest.getServerPort()}]] + [[${#httpServletRequest.getContextPath()}]] + "/purchaseStatisticsExport"
+        $.gritter.add({
+            title: '系统消息',
+            text: "正在导出数据，请等待"
+        });
+    }
+</script>
+</body>
+</html>

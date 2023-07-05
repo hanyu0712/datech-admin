@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:fragment="common-header">
+  <!--common-->
+  <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-datepicker/css/datepicker-custom.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-timepicker/css/timepicker.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-colorpicker/css/colorpicker.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-daterangepicker/daterangepicker-bs3.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap-datetimepicker/css/datetimepicker-custom.css}" />
+
+    <!--tags input-->
+    <link rel="stylesheet" type="text/css" th:href="@{/js/jquery-tags-input/jquery.tagsinput.css}" />
+
+  <link href="css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+  <link href="css/style-responsive.css" th:href="@{/css/style-responsive.css}" rel="stylesheet">
+  <!--gritter css-->
+  <link rel="stylesheet" type="text/css" th:href="@{/js/gritter/css/jquery.gritter.css}" />
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js" th:src="@{/js/html5shiv.js}"></script>
+  <script src="js/respond.min.js" th:src="@{/js/respond.min.js}"></script>
+  <![endif]-->
+  </div>
+</head>
+<body>
+
+<!-- left side start-->
+<div th:fragment="common-leftmenu" class="left-side sticky-left-side">
+
+  <!--logo and iconic logo start-->
+  <div class="logo">
+    <a href="main.html"><img src="images/logo.png" alt=""></a>
+  </div>
+  <div class="logo-icon text-center">
+    <a href="main.html"><img src="images/logo_icon.png" alt=""></a>
+  </div>
+  <!--logo and iconic logo end-->
+
+  <div class="left-side-inner">
+    <!--sidebar nav start-->
+    <ul class="nav nav-pills nav-stacked custom-nav">
+      <li class="menu-list nav-active"><a href="#"><i class="fa fa-th-list"></i> <span>销售模块</span></a>
+        <ul class="sub-menu-list">
+          <li ><a th:href="@{/salesInfo}"> 销售合同信息</a></li>
+          <li ><a th:href="@{/salesStatistics}"> 销售合同总统计信息</a></li>
+          <li ><a th:href="@{/salesStatus}"> 合同执行状态</a></li>
+          <li ><a th:href="@{/salesCollection}"> 收款明细</a></li>
+          <li ><a th:href="@{/salesIncomeConfirm}"> 销项发票明细</a></li>
+          <li ><a th:href="@{/salesInvoiceApply}"> 发票申请</a></li>
+        </ul>
+      </li>
+      <li class="menu-list nav-active"><a href="#"><i class="fa fa-th-list"></i> <span>采购模块</span></a>
+        <ul class="sub-menu-list">
+          <li ><a th:href="@{/purchaseInfo}"> 采购合同信息</a></li>
+          <li ><a th:href="@{/purchaseStatistics}"> 采购合同总统计信息</a></li>
+          <li ><a th:href="@{/purchasePayment}"> 付款明细</a></li>
+          <li ><a th:href="@{/purchaseInvoice}"> 进项发票明细</a></li>
+          <li ><a th:href="@{/projectCost}"> 项目成本汇总分析</a></li>
+        </ul>
+      </li>
+      <!--<li class="menu-list"><a href="#"><i class="fa fa-th-list"></i> <span>系统模块</span></a>
+        <ul class="sub-menu-list">
+          <li ><a th:href="@{/basic_table}"> 修改个人信息</a></li>
+        </ul>
+      </li>-->
+    </ul>
+    <!--sidebar nav end-->
+  </div>
+</div>
+<!-- left side end-->
+
+<!-- header section start-->
+<div th:fragment="common-headermenu" class="header-section">
+
+  <!--toggle button start-->
+  <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+  <!--toggle button end-->
+
+  <!--notification menu start -->
+  <div class="menu-right">
+    <ul class="notification-menu">
+      <li>
+        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <img src="images/photos/c0ac5f0d0e0b11a1f5ca1a9ee9bd1bf8.jpeg" alt="" />
+          [[${session.loginUser.realName}]]
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+          <li><a href="#updatePasswordDev" data-toggle="modal" class="fa fa-cog"></i>修改密码</a></li>
+          <li><a th:href="@{/}"><i class="fa fa-sign-out"></i>退出</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="syslogModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+            <h4 class="modal-title">操作日志</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form" id="syslog-form">
+            <div class="form-group" id="syslogDiv">
+              <div class="col-lg-10" id="sysLogContent">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="updatePasswordDev" class="modal fade" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+          <h4 class="modal-title">修改密码</h4>
+
+        </div>
+        <div class="modal-body">
+
+          <form class="form-horizontal" role="form" method="post" th:action="@{/user/password}">
+            <div class="form-group">
+              <label for="newPassword" class="col-lg-2 col-sm-2 control-label">密码</label>
+              <div class="col-lg-10">
+                <input type="hidden" class="form-control"  name="id" th:value="${session.loginUser.id}">
+                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="输入新密码" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword" class="col-lg-2 col-sm-2 control-label">确认密码</label>
+              <div class="col-lg-10">
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="再次输入新密码" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-primary">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input type="hidden" class="form-control" id="serverUrl" th:value="${#httpServletRequest.getScheme()} + '://' +${#httpServletRequest.getServerName()} + ':' + ${#httpServletRequest.getServerPort()} + ${#httpServletRequest.getContextPath()}">
+
+</div>
+<!-- header section end-->
+
+<div th:fragment="common-script">
+<!-- Placed js at the end of the document so the pages load faster -->
+  <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+  <script th:src="@{/js/jquery-ui-1.9.2.custom.min.js}"></script>
+  <script th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+  <script th:src="@{/js/modernizr.min.js}"></script>
+  <script th:src="@{/js/jquery.nicescroll.js}"></script>
+
+  <!--pickers plugins-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js}"></script>-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-daterangepicker/moment.min.js}"></script>-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-daterangepicker/daterangepicker.js}"></script>-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-colorpicker/js/bootstrap-colorpicker.js}"></script>-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-timepicker/js/bootstrap-timepicker.js}"></script>-->
+
+  <!--pickers initialization-->
+<!--  <script th:src="@{/js/pickers-init.js}"></script>-->
+
+  <!--icheck -->
+<!--  <script th:src="@{/js/iCheck/jquery.icheck.js}"></script>-->
+<!--  <script th:src="@{/js/icheck-init.js}"></script>-->
+  <!--multi-select-->
+<!--  <script type="text/javascript" th:src="@{/js/jquery-multi-select/js/jquery.multi-select.js}"></script>-->
+<!--  <script type="text/javascript" th:src="@{/js/jquery-multi-select/js/jquery.quicksearch.js}"></script>-->
+<!--  <script th:src="@{/js/multi-select-init.js}"></script>-->
+  <!--spinner-->
+<!--  <script type="text/javascript" th:src="@{/js/fuelux/js/spinner.min.js}"></script>-->
+<!--  <script th:src="@{/js/spinner-init.js}"></script>-->
+  <!--file upload-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-fileupload.min.js}"></script>-->
+  <!--tags input-->
+<!--  <script th:src="@{/js/jquery-tags-input/jquery.tagsinput.js}"></script>-->
+<!--  <script th:src="@{/js/tagsinput-init.js}"></script>-->
+  <!--bootstrap input mask-->
+<!--  <script type="text/javascript" th:src="@{/js/bootstrap-inputmask/bootstrap-inputmask.min.js}"></script>-->
+
+  <!--form validation-->
+  <script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+  <script th:src="@{/js/validation-init.js}"></script>
+
+  <!--common scripts for all pages-->
+  <script th:src="@{/js/scripts.js}"></script>
+  <!--gritter script-->
+  <script type="text/javascript" th:src="@{/js/gritter/js/jquery.gritter.js}"></script>
+  <script th:src="@{/js/gritter/js/gritter-init.js}" type="text/javascript"></script>
+  <script th:src="@{/js/datech_common.js}" type="text/javascript"></script>
+</div>
+
+
+</body>
+</html>

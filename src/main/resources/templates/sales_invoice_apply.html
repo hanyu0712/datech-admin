@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>销售合同发票申请</title>
+
+  <!--dynamic table-->
+  <link href="js/advanced-datatable/css/demo_page.css" rel="stylesheet" />
+  <link href="js/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+  <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css" />
+
+    <div th:include="common::common-header"></div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <div th:replace="common::common-leftmenu"></div>
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <div th:replace="common::common-headermenu"></div>
+
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="salesContractModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">发票申请</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" id="contract-form">
+                            <input type="hidden" class="form-control" id="id" name="id">
+                            <div class="form-group">
+                                <label for="contractNo" class="col-lg-2 col-sm-2 control-label">合同号</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control m-bot15" id="contractNo" name="contractNo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectName" class="col-lg-2 col-sm-2 control-label">项目名称</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="projectName" name="projectName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="company" class="col-lg-2 col-sm-2 control-label">所属区域</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="company" name="company">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="salesSubject" class="col-lg-2 col-sm-2 control-label">销售主体</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="salesSubject" name="salesSubject">
+                                        <option value="迪科瑞德科技有限公司">迪科瑞德科技有限公司</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="service" class="col-lg-2 col-sm-2 control-label">发票类型</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="service" name="service">
+                                        <option value="专票">专票</option>
+                                        <option value="普票">普票</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceTaxRate" class="col-lg-2 col-sm-2 control-label">税率</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="serviceTaxRate" name="serviceTaxRate">
+                                        <option value="0%">0%</option>
+                                        <option value="1%">1%</option>
+                                        <option value="3%">3%</option>
+                                        <option value="6%">6%</option>
+                                        <option value="13%">13%</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--<div class="form-group">
+                                <label for="equipment" class="col-lg-2 col-sm-2 control-label">发票类型—设备</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="equipment" name="equipment">
+                                        <option value="专票">专票</option>
+                                        <option value="普票">普票</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="equipmentTaxRate" class="col-lg-2 col-sm-2 control-label">税率</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control m-bot15" id="equipmentTaxRate" name="equipmentTaxRate">
+                                        <option value="0%">0%</option>
+                                        <option value="1%">1%</option>
+                                        <option value="3%">3%</option>
+                                        <option value="6%">6%</option>
+                                        <option value="13%">13%</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label for="invoicedAmount" class="col-lg-2 col-sm-2 control-label">已开发票金额</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="invoicedAmount" name="invoicedAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="thisTimeAmount" class="col-lg-2 col-sm-2 control-label">本次开票金额</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="thisTimeAmount" name="thisTimeAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="returnedAmount" class="col-lg-2 col-sm-2 control-label">合同已回款金额</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="returnedAmount" name="returnedAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="expectedReturnAmount" class="col-lg-2 col-sm-2 control-label">预计开票后回款金额</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="expectedReturnAmount" name="expectedReturnAmount" placeholder="请输入数字金额">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="expectedReturnTime" class="col-lg-2 col-sm-2 control-label">预计回款时间</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="expectedReturnTime" name="expectedReturnTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="arrivalInfo" class="col-lg-2 col-sm-2 control-label">合同到货情况</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="arrivalInfo" name="arrivalInfo">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="receiptInfo" class="col-lg-2 col-sm-2 control-label">签收单返回情况</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="receiptInfo" name="receiptInfo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="invoiceContent" class="col-lg-2 col-sm-2 control-label">开票内容</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="invoiceContent" name="invoiceContent">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="companyName" class="col-lg-2 col-sm-2 control-label">公司名称</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="companyName" name="companyName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="taxpayerNo" class="col-lg-2 col-sm-2 control-label">纳税人识别号</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="taxpayerNo" name="taxpayerNo">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address" class="col-lg-2 col-sm-2 control-label">地址电话</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="address" name="address">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bank" class="col-lg-2 col-sm-2 control-label">开户行及账号</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="bank" name="bank">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="remark" class="col-lg-2 col-sm-2 control-label">备注</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="remark" name="remark">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="invoiceSigner" class="col-lg-2 col-sm-2 control-label">发票签收人或寄票人</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="invoiceSigner" name="invoiceSigner">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="logisticsNo" class="col-lg-2 col-sm-2 control-label">快递单号</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control" id="logisticsNo" name="logisticsNo">
+                                </div>
+                            </div>
+                            <div class="form-group" id="">
+                                <label for="goods" class="col-lg-2 col-sm-2 control-label">商品</label>
+                                <div class="col-lg-10">
+                                    <p>商品录入格式：商品名称  规格型号  单位 数量 单价 金额.</p>
+                                    <textarea rows="12" class="form-control" id="goods" name="goods"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" id="rejectionContentDiv">
+                                <label for="rejectionContent" class="col-lg-2 col-sm-2 control-label">驳回原因</label>
+                                <div class="col-lg-10">
+                                    <textarea rows="6" class="form-control" id="rejectionContent" name="rejectionContent"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10" id="saveDiv">
+                                    <a href="#" class="btn btn-primary"  id="button-save">保存</a>
+                                    <a href="#" class="btn btn-primary"  id="button-submit">提交审核</a>
+                                </div>
+                                <div class="col-lg-offset-2 col-lg-10" id="checkDiv">
+                                    <a href="#" class="btn btn-primary" id="button-approved">通过</a>
+                                    <a href="#" class="btn btn-primary" id="button-reject">驳回</a>
+                                </div>
+                                <div class="col-lg-offset-2 col-lg-10" id="rollbackDiv">
+                                    <a href="#" class="btn btn-primary" id="button-rollback">取消审核</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <!--<h3>
+                销售合同信息
+            </h3>-->
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">销售模块</a>
+                </li>
+                <li class="active"> 发票申请 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <div class="adv-table" style="overflow: auto">
+                                <div class="clearfix">
+                                    <div class="btn-group">
+                                        <a href="#salesContractModal" data-toggle="modal" class="btn btn-xs btn-success" th:data-method="insert" th:if="${session.loginUser.department} == 'shangwu'">
+                                            新增 <i class="fa fa-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <table class="display table table-bordered" id="hidden-table-info">
+                                    <thead>
+                                        <tr>
+                                            <th>合同号</th>
+                                            <th>项目名称</th>
+                                            <th class="hidden-phone">所属区域</th>
+                                            <th>销售主体</th>
+                                            <th>发票类型</th>
+                                            <th>税率</th>
+                                            <!--<th>发票类型-设备</th>
+                                            <th>发票类型-设备税率</th>-->
+                                            <th>已开发票金额</th>
+                                            <th>本次开票金额</th>
+                                            <th>合同已回款金额</th>
+                                            <th>预计开票后回款金额</th>
+                                            <th>预计回款时间</th>
+                                            <th>合同到货情况</th>
+                                            <th>签收单返回情况</th>
+                                            <th>开票内容</th>
+                                            <th>公司名称</th>
+                                            <th>纳税人识别号</th>
+                                            <th>地址电话</th>
+                                            <th>开户行及账号</th>
+                                            <th>备注</th>
+                                            <th>发票签收人或寄票人</th>
+                                            <th>快递单号</th>
+                                            <th>商品详情</th>
+                                            <th>申请人</th>
+                                            <th>审核状态</th>
+                                            <th class="hidden-phone">商务审核人</th>
+                                            <th class="hidden-phone">财务审核人</th>
+                                            <th class="hidden-phone">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="gradeX" th:each="data,stats:${dataList}">
+                                            <td>[[${data.contractNo}]]</td>
+                                            <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data.projectName}" th:if="${#strings.trim(data.projectName)} and ${#strings.length(#strings.trim(data.projectName))>=5}">[[|${#strings.substring(#strings.trim(data.projectName),0,5)}...|]]</a>
+                                                <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data.projectName}" th:if="${#strings.trim(data.projectName)} and ${#strings.length(#strings.trim(data.projectName))<5}">[[${#strings.trim(data.projectName)}]]</a></td>
+                                            <td class="hidden-phone">[[${data.company}]]</td>
+                                            <td><a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data.salesSubject}" th:if="${#strings.trim(data.salesSubject)} and ${#strings.length(#strings.trim(data.salesSubject))>=5}">[[|${#strings.substring(#strings.trim(data.salesSubject),0,5)}...|]]</a>
+                                                <a href="javascript:void(0)" class="popovers" data-trigger="hover" data-toggle="popover" data-placement="top"  th:data-content="${data.salesSubject}" th:if="${#strings.trim(data.salesSubject)} and ${#strings.length(#strings.trim(data.salesSubject))<5}">[[${#strings.trim(data.salesSubject)}]]</a></td>
+                                            <td>[[${data.service}]]</td>
+                                            <td>[[${data.serviceTaxRate}]]</td>
+                                            <!--<td>[[${data.equipment}]]</td>
+                                            <td>[[${data.equipmentTaxRate}]]</td>-->
+                                            <td>[[${data.invoicedAmount}]]</td>
+                                            <td>[[${data.thisTimeAmount}]]</td>
+                                            <td>[[${data.returnedAmount}]]</td>
+                                            <td>[[${data.expectedReturnAmount}]]</td>
+                                            <td>[[${data.expectedReturnTime}]]</td>
+                                            <td>[[${data.arrivalInfo}]]</td>
+                                            <td>[[${data.receiptInfo}]]</td>
+                                            <td>[[${data.invoiceContent}]]</td>
+                                            <td>[[${data.companyName}]]</td>
+                                            <td>[[${data.taxpayerNo}]]</td>
+                                            <td>[[${data.address}]]</td>
+                                            <td>[[${data.bank}]]</td>
+                                            <td>[[${data.remark}]]</td>
+                                            <td>[[${data.invoiceSigner}]]</td>
+                                            <td>[[${data.logisticsNo}]]</td>
+                                            <td><a href="javascript:void(0)" class="goods"  th:data-goods="${data.goods}">商品详情</a></td>
+                                            <td>[[${data.createUserName}]]</td>
+                                            <td class="hidden-phone" th:switch="${data.status}">
+                                                <p th:case=0>待提交</p>
+                                                <p th:case=1>待商务审核</p>
+                                                <p th:case=2>审核通过</p>
+                                                <p th:case=3>审核驳回</p>
+                                                <p th:case=4>待财务审核</p>
+                                                <p th:case="*"></p>
+                                            </td>
+                                            <td class="hidden-phone">[[${data.auditShangwuName}]]</td>
+                                            <td class="hidden-phone">[[${data.auditCaiwuName}]]</td>
+                                            <td class="hidden-phone" >
+                                                <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.getId()}" th:data-method="update" th:if="${session.loginUser.id}==${data.createUserId} and (${data.status}==0 or ${data.status}==3)">编辑</button>
+                                                <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.getId()}" th:data-method="check" th:if="${session.loginUser.role}==1 and ${data.status}==1 and ${session.loginUser.department} == 'shangwu'">审核</button>
+                                                <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.getId()}" th:data-method="check" th:if="${session.loginUser.role}==1 and ${data.status}==4 and ${session.loginUser.department} == 'caiwu'">审核</button>
+                                                <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#salesContractModal" th:data-rowid="${data.getId()}" th:data-method="rollback" th:if="(${session.loginUser.id}==${data.auditShangwuId} and ${data.status}==4) or (${session.loginUser.id}==${data.auditCaiwuId} and ${data.status}==2)">取消审核</button>
+                                                <a href="#syslogModal" class="btn btn-xs btn-info" data-toggle="modal" th:data-rowid="${data.getId()}" th:data-table="salesInvoiceApply">操作日志</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!--body wrapper end-->
+    </div>
+    <!-- main content end-->
+</section>
+
+<div th:replace="common::common-script"></div>
+
+<!--dynamic table-->
+<script type="text/javascript" language="javascript" src="js/advanced-datatable/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+<!--dynamic table initialization -->
+<script src="js/sales_contract_invoice_apply.js" th:inline="javascript"></script>
+<script th:inline="javascript">
+
+    /*
+     * Initialse DataTables, with no sorting on the 'details' column
+     */
+    var oTable = $('#hidden-table-info').dataTable();
+
+    /* Add event listener for opening and closing details
+     * Note that the indicator for showing which row is open is not controlled by DataTables,
+     * rather it is done here
+     */
+    $(document).on('click','#hidden-table-info tbody td a.goods',function () {
+        let nTr = $(this).parents('tr')[0];
+        let goods = $(this)[0].getAttribute("data-goods");
+        if ( oTable.fnIsOpen(nTr) )
+        {
+            oTable.fnClose( nTr );
+        }
+        else
+        {
+            var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+            sOut += '<tr><td><textarea style= "background:transparent;border-style:none;color:#f2fbff " cols="100" rows="5">'+goods+'</textarea></td></tr>';
+            sOut += '</table>';
+            oTable.fnOpen( nTr, sOut, 'details' );
+        }
+    } );
+
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>Registration</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+    <!--gritter css(消息提示)-->
+    <link rel="stylesheet" type="text/css" href="js/gritter/css/jquery.gritter.css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="login-body">
+
+<div class="container">
+
+    <form class="form-signin" method="post" th:action="@{/user}" id= "myForm">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">新用户注册</h1>
+            <img src="images/login-logo.png" alt=""/>
+        </div>
+
+
+        <div class="login-wrap">
+            <p>请选择所属公司</p>
+            <select class="form-control m-bot15" name="company">
+                <option value="DK-BJ">北京总公司</option>
+                <option value="DK-NN">南宁分公司</option>
+                <option value="DK-CD">成都分公司</option>
+            </select>
+            <p>请选择所属部门</p>
+
+            <select class="form-control input-sm m-bot15" name="department">
+                <option value="caiwu">财务部</option>
+                <option value="shangwu">商务部</option>
+                <option value="jishu">技术部</option>
+            </select>
+            <input type="text" autofocus="" id="realName" name="realName" placeholder="真实姓名" class="form-control">
+            <input type="text" autofocus="" id="userName" name="userName" placeholder="系统账号" class="form-control">
+            <input type="password" id="password" name="password" placeholder="密码" class="form-control">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="确认密码" class="form-control">
+            <!--<label class="checkbox">
+                <input type="checkbox" value="agree this condition"> 我同意服务条款和隐私政策
+            </label>-->
+            <button class="btn btn-lg btn-login btn-block">
+                <i class="fa fa-check"></i>
+            </button>
+
+            <div class="registration">
+                已经注册。
+                <a class="" th:href="@{/login}">
+                    去登陆
+                </a>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/modernizr.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/gritter/js/jquery.gritter.js}"></script>
+<script th:inline="javascript">
+
+    $(document).on('click','form div button',function () {
+        let user_data = {};
+        $.each($("#myForm").serializeArray(), function(i, field){
+            user_data[field.name]=field.value;
+        });
+        if (!user_data["realName"]) {
+            $.gritter.add({
+                title: '系统消息',
+                text: "请输入真实姓名"
+            });
+            return false;
+        }
+        if (!user_data["userName"]) {
+            $.gritter.add({
+                title: '系统消息',
+                text: "请输入系统账号"
+            });
+            return false;
+        }
+        if (!user_data["password"]) {
+            $.gritter.add({
+                title: '系统消息',
+                text: "请输入密码"
+            });
+            return false;
+        }
+        if (!user_data["confirmPassword"]) {
+            $.gritter.add({
+                title: '系统消息',
+                text: "请输入确认密码"
+            });
+            return false;
+        }
+        if (user_data["password"] !== user_data["confirmPassword"]) {
+            $.gritter.add({
+                title: '系统消息',
+                text: "两次密码不一致"
+            });
+            return false;
+        }
+        return true
+    } );
+
+</script>
+</body>
+</html>
